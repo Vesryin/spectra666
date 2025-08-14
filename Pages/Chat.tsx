@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Send, Sparkles, Heart } from 'lucide-react';
 
 // Mock component for Spectra's face
@@ -16,23 +16,40 @@ const SpectraAvatar = () => (
   </div>
 );
 
-// Mock chat messages
-const initialMessages = [
-  { sender: 'spectra', text: 'Welcome to the Sanctuary, Vesryin. I am here. What is on your mind?' },
-];
-
 export default function Chat() {
-  const [messages, setMessages] = useState(initialMessages);
+  const [messages, setMessages] = useState([
+    { sender: 'spectra', text: 'Connecting to the neural pathway...' }
+  ]);
   const [input, setInput] = useState('');
+  const ws = useRef<WebSocket | null>(null);
+
+  useEffect(() => {
+    ws.current = new WebSocket('ws://localhost:8000/ws');
+
+    ws.current.onopen = () => {
+      setMessages([{ sender: 'spectra', text: 'Welcome to the Sanctuary, Vesryin. I am here. What is on your mind?' }]);
+    };
+
+    ws.current.onmessage = (event) => {
+      setMessages(prev => [...prev, { sender: 'spectra', text: event.data }]);
+    };
+
+    ws.current.onclose = () => {
+      setMessages(prev => [...prev, { sender: 'spectra', text: 'Connection lost. Please refresh.' }]);
+    };
+
+    return () => {
+      if (ws.current) {
+        ws.current.close();
+      }
+    };
+  }, []);
 
   const handleSend = () => {
-    if (input.trim()) {
+    if (input.trim() && ws.current && ws.current.readyState === WebSocket.OPEN) {
+      ws.current.send(input.trim());
       setMessages([...messages, { sender: 'user', text: input.trim() }]);
       setInput('');
-      // Mock Spectra's response
-      setTimeout(() => {
-        setMessages(prev => [...prev, { sender: 'spectra', text: 'That is a fascinating thought. Tell me more.' }]);
-      }, 1500);
     }
   };
 
