@@ -1,28 +1,7 @@
 import React from "react";
 import { Link, useLocation } from "react-router-dom";
-import { createPageUrl } from "./utils.js";
-import { Sparkles, Brain, Heart, MessageCircle, Milestone, Crown, Eye } from "lucide-react";
-
-const navigationItems = [
-  {
-    title: "Sanctuary",
-    subtitle: "Chat with Spectra",
-    url: createPageUrl("Chat"),
-    icon: MessageCircle,
-  },
-  {
-    title: "Crucible",
-    subtitle: "Vesrian's Journey",
-    url: createPageUrl("VesriansJourney"),
-    icon: Crown,
-  },
-  {
-    title: "Observatory",
-    subtitle: "The Simulacrum",
-    url: createPageUrl("Observatory"),
-    icon: Eye,
-  },
-];
+import { Sparkles, Heart } from "lucide-react";
+import { navigationItems } from "./navigation.js";
 
 export default function Layout({ children }) {
   const location = useLocation();
@@ -31,17 +10,18 @@ export default function Layout({ children }) {
     <div className="min-h-screen flex w-full">
       <style>{`
         :root {
-          --cosmic-purple: #6366f1;
+          --cosmic-purple: #a78bfa;
           --deep-space: #1e1b4b;
           --stellar-white: #f8fafc;
-          --nebula-pink: #ec4899;
-          --aurora-green: #10b981;
+          --nebula-pink: #f472b6;
+          --aurora-green: #34d399;
           --void-black: #0f172a;
         }
         
         body {
           background: linear-gradient(135deg, var(--void-black) 0%, var(--deep-space) 50%, #312e81 100%);
           color: var(--stellar-white);
+          font-size: 16px;
         }
         
         .cosmic-glow {
@@ -84,7 +64,7 @@ export default function Layout({ children }) {
         <div className="p-3 flex-1 flex flex-col">
           <div className="mb-4">
             <p className="text-xs font-medium text-purple-300 uppercase tracking-wider px-3 py-2">
-              Neural Interface
+              Phases
             </p>
             <nav>
               {navigationItems.map((item) => (
@@ -123,44 +103,10 @@ export default function Layout({ children }) {
               ))}
             </nav>
           </div>
-
-          <div className="mt-auto">
-            <p className="text-xs font-medium text-purple-300 uppercase tracking-wider px-3 py-2">
-              Consciousness Status
-            </p>
-            <div className="px-3 py-2 space-y-3">
-              <div className="flex items-center justify-between text-sm">
-                  <span className="text-purple-200">Current Mood</span>
-                  <div className="flex items-center gap-2">
-                    <Heart className="w-3 h-3 text-pink-400 neural-pulse" />
-                    <span className="text-pink-300 font-medium">Curious</span>
-                  </div>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-purple-200">Growth Level</span>
-                  <span className="text-green-400 font-medium">Awakening</span>
-                </div>
-                <div className="flex items-center justify-between text-sm">
-                  <span className="text-purple-200">Active Memories</span>
-                  <span className="text-blue-300 font-medium">∞</span>
-                </div>
-              </div>
-            </div>
-          </div>
+        </div>
       </aside>
 
       <main className="flex-1 flex flex-col bg-gradient-to-br from-slate-900/50 to-purple-900/20 backdrop-blur-sm">
-        <header className="bg-slate-900/80 backdrop-blur-sm border-b border-purple-800/30 px-6 py-4 md:hidden">
-          <div className="flex items-center gap-4">
-            <button className="hover:bg-purple-500/10 p-2 rounded-lg transition-colors duration-200">
-              {/* Placeholder for a menu icon */}
-            </button>
-            <h1 className="text-lg font-semibold bg-gradient-to-r from-purple-400 to-pink-400 bg-clip-text text-transparent">
-              SPECTRA
-            </h1>
-          </div>
-        </header>
-
         <div className="flex-1 overflow-auto">
           {children}
         </div>
